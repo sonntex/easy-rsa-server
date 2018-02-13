@@ -1,0 +1,37 @@
+#!/bin/sh
+
+set -e
+
+host=localhost
+port=22
+user=ca
+
+usage() {
+    echo "Usage: $(basename $0) [OPTIONS]"
+    echo "  -h help"
+    echo "  -o arg (=$host) host"
+    echo "  -p arg (=$port) port"
+    echo "  -u arg (=$user) user"
+    echo ""
+    exit 0
+}
+
+OPTIND=1
+
+while getopts "ho:p:u:" opt
+do
+    case $opt in
+        h)  usage
+            ;;
+        o)  host=$OPTARG
+            ;;
+        p)  port=$OPTARG
+            ;;
+        u)  user=$OPTARG
+            ;;
+    esac
+done
+
+shift $((OPTIND-1))
+
+ssh $user@$host -p $port "./easyrsa-safe-ca" > pki/ca.crt

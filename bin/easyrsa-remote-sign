@@ -1,0 +1,47 @@
+#!/bin/sh
+
+set -e
+
+host=localhost
+port=22
+user=ca
+
+usage() {
+    echo "Usage: $(basename $0) [OPTIONS] <NAME>"
+    echo "  -h help"
+    echo "  -o arg (=$host) host"
+    echo "  -p arg (=$port) port"
+    echo "  -u arg (=$user) user"
+    echo ""
+    exit 0
+}
+
+OPTIND=1
+
+while getopts "ho:p:u:" opt
+do
+    case $opt in
+        h)  usage
+            ;;
+        o)  host=$OPTARG
+            ;;
+        p)  port=$OPTARG
+            ;;
+        u)  user=$OPTARG
+            ;;
+    esac
+done
+
+shift $((OPTIND-1))
+
+client=$1
+
+export EASYRSA_DN=cn_only
+export EASYRSA_REQ_CN=$client
+
+easy-rsa/easyrsa --batch gen-req $client nopass
+
+mkdir -m 0700 -p pki/issued
+
+cat pki/reqs/$client.req | \
+    ssh $user@$host -p $port "./easyrsa-safe-sign $client" > pki/issued/$client.crt

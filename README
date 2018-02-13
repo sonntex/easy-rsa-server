@@ -1,0 +1,37 @@
+HOWTO
+
+How to build?
+-------------
+
+$ git clone https://github.com/sonntex/easy-rsa-server.git
+$ cd easy-rsa-server
+$ git submodule init
+$ git submodule update
+$ mkdir build
+$ cd build
+$ cmake ..
+$ make && make install
+
+How to configure server?
+------------------------
+
+$ sudo useradd -m -s /bin/bash -d /home/ca ca
+$ sudo passwd ca
+$ su ca
+$ cd
+$ su admin
+$ rsync -rp /path/to/easy-rsa-server/* ./
+$ ./easy-rsa/easyrsa init-pki
+$ ./easy-rsa/easyrsa build-ca nopass
+$ ./easy-rsa/easyrsa gen-req server nopass
+$ ./easy-rsa/easyrsa sign-req server server
+$ ./easy-rsa/easyrsa gen-dh
+
+How to configure client?
+------------------------
+
+$ ssh-copy-id -i ~/.ssh/id_rsa.pub ca@localhost
+$ rsync -rp /path/to/easy-rsa-server/* ./
+$ ./easy-rsa/easyrsa init-pki
+$ ./easyrsa-remote-ca
+$ ./easyrsa-remote-sign laptop
