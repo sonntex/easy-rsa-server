@@ -44,4 +44,6 @@ easy-rsa/easyrsa --batch gen-req $client nopass
 mkdir -m 0700 -p pki/issued
 
 cat pki/reqs/$client.req | \
-    ssh $user@$host -p $port "./easyrsa-safe-sign $client" > pki/issued/$client.crt
+    ssh $user@$host -p $port "./easyrsa-safe-sign $client" > /tmp/$client.crt
+
+mv /tmp/$client.crt pki/issued/$client.crt

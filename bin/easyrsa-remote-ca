@@ -34,4 +34,6 @@ done
 
 shift $((OPTIND-1))
 
-ssh $user@$host -p $port "./easyrsa-safe-ca" > pki/ca.crt
+ssh $user@$host -p $port "./easyrsa-safe-ca" > /tmp/ca.crt
+
+mv /tmp/ca.crt pki/ca.crt
