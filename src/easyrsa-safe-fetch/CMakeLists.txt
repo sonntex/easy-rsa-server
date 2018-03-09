@@ -1,4 +1,4 @@
-set(PROJECT easyrsa-safe-ca)
+set(PROJECT easyrsa-safe-fetch)
 
 project(${PROJECT})
 

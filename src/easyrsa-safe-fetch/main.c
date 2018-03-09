@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
     if (ret)
         return ret;
 
-    ret = execve("./easyrsa-sign", argv, 0);
+    ret = execve("./easyrsa-fetch", argv, 0);
     if (ret)
         return ret;
 

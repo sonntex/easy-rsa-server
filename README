@@ -21,17 +21,14 @@ $ su ca
 $ cd
 $ su admin
 $ rsync -rp /path/to/easy-rsa-server/* ./
-$ ./easy-rsa/easyrsa init-pki
-$ ./easy-rsa/easyrsa build-ca nopass
-$ ./easy-rsa/easyrsa gen-req server nopass
-$ ./easy-rsa/easyrsa sign-req server server
-$ ./easy-rsa/easyrsa gen-dh
+$ easy-rsa/easyrsa init-pki
+$ easy-rsa/easyrsa build-ca nopass
+$ easy-rsa/easyrsa build-server-full server nopass
+$ easy-rsa/easyrsa gen-dh
 
 How to configure client?
 ------------------------
 
 $ ssh-copy-id -i ~/.ssh/id_rsa.pub ca@localhost
 $ rsync -rp /path/to/easy-rsa-server/* ./
-$ ./easy-rsa/easyrsa init-pki
-$ ./easyrsa-remote-ca
-$ ./easyrsa-remote-sign laptop
+$ easyrsa-remote-fetch laptop

@@ -7,7 +7,7 @@ port=22
 user=ca
 
 usage() {
-    echo "Usage: $(basename $0) [OPTIONS]"
+    echo "Usage: $(basename $0) [OPTIONS] <CN>"
     echo "  -h help"
     echo "  -o arg (=$host) host"
     echo "  -p arg (=$port) port"
@@ -34,6 +34,10 @@ done
 
 shift $((OPTIND-1))
 
-ssh $user@$host -p $port "./easyrsa-safe-ca" > /tmp/ca.crt
+if [ $# -ne 1 ]; then
+    usage
+fi
 
-mv /tmp/ca.crt pki/ca.crt
+cn=$1
+
+ssh $user@$host -p $port "./easyrsa-safe-fetch $cn" > $cn.p12
